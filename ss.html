@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>روائع البيان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #27ae60;
+            --dark-color: #0a192f;
+            --light-color: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #000 100%);
+            color: var(--light-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* شريط التنقل */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 25, 47, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        
+        .menu-btn {
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .menu-btn i {
+            font-size: 1.8rem;
+            color: var(--light-color);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-btn.active i {
+            transform: rotate(90deg);
+            color: var(--primary-color);
+        }
+        
+        /* القائمة الجانبية */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 6rem 2rem 2rem;
+            transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+            z-index: 999;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar a {
+            display: block;
+            color: var(--light-color);
+            text-decoration: none;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar a:hover {
+            color: var(--primary-color);
+            padding-right: 10px;
+        }
+        
+        /* الصفحات */
+        .page {
+            min-height: 100vh;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* الصفحة الرئيسية */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .social-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        
+        .social-icon i {
+            font-size: 2.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon.youtube i {
+            color: #ff0000;
+        }
+        
+        .social-icon.tiktok i {
+            color: #69c9d0;
+        }
+        
+        .social-icon.active {
+            background: var(--primary-color);
+            border-color: var(--light-color);
+            box-shadow: 0 0 20px rgba(39, 174, 96, 0.7);
+        }
+        
+        .social-icon.active i {
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        /* تأثيرات 3D في الخلفية */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* الصفحة الثانية */
+        .documentation {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(10, 25, 47, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .documentation h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+        }
+        
+        .documentation p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .money-text {
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin: 3rem 0;
+            text-shadow: 0 0 20px rgba(39, 174, 96, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        .channel-doc {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        
+        .channel-doc img {
+            max-width: 200px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* الصفحة الثالثة */
+        .links-page {
+            background: rgba(10, 25, 47, 0.8);
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+        }
+        
+        .links-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+        }
+        
+        .link-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .link-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+        
+        .link-card i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .link-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .link-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+        
+        .link-card a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .link-card a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.5);
+        }
+        
+        .coming-soon {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .coming-soon::after {
+            content: "قريبًا";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* التنقل بين الصفحات */
+        .hidden {
+            display: none;
+        }
+        
+        /* تأثيرات الحركة */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .social-icons {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .links-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .money-text {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://via.placeholder.com/150/27ae60/ffffff?text=BM" alt="توتيق القناة">
+            روائع البيان
+        </div>
+        <div class="menu-btn" id="menuBtn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+    
+    <!-- القائمة الجانبية -->
+    <div class="sidebar" id="sidebar">
+        <a href="mailto:contact@example.com"><i class="fas fa-envelope"></i> تواصل مع المطور</a>
+        <a href="#"><i class="fas fa-info-circle"></i> عنا</a>
+        <a href="#"><i class="fas fa-question-circle"></i> المساعدة</a>
+    </div>
+    
+    <!-- تأثيرات الجسيمات في الخلفية -->
+    <div class="particles" id="particles-js"></div>
+    
+    <!-- الصفحة الرئيسية -->
+    <section class="page hero" id="home">
+        <h1>شكرًا لثقتكم بنا<br>ومتابعتكم لقنواتنا</h1>
+        <p>نحن نقدر دعمكم المستمر وسنستمر في تقديم محتوى مميز ينال إعجابكم</p>
+        
+        <div class="social-icons">
+            <div class="social-icon youtube" id="youtubeIcon" onclick="toggleIcon('youtube')">
+                <i class="fab fa-youtube"></i>
+            </div>
+            <div class="social-icon tiktok" id="tiktokIcon" onclick="toggleIcon('tiktok')">
+                <i class="fab fa-tiktok"></i>
+            </div>
+        </div>
+        
+        <div class="channel-doc">
+            <img src="https://via.placeholder.com/400x200/27ae60/ffffff?text=روائع البيان" alt="توتيق القناة">
+            <p>قناة روائع البيان - تقديم محتوى مميز وإبداعي</p>
+        </div>
+    </section>
+    
+    <!-- الصفحة الثانية -->
+    <section class="page hidden" id="documentation">
+        <div class="documentation">
+            <h2>توثيق قناتنا</h2>
+            <p>مرحبًا بكم في قناة روائع البيان، هنا نقدم محتوى مميز ومتنوع في مختلف المجالات التي تهمكم. نحرص على تقديم محتوى عالي الجودة يلبي توقعات متابعينا الكرام.</p>
+            <p>يمكنكم متابعتنا على منصات التواصل الاجتماعي للاطلاع على أحدث إصداراتنا والمشاركة في تفاعلاتنا اليومية.</p>
+            
+            <div class="money-text">فلوس</div>
+            
+            <p>نشكركم على دعمكم المستمر وثقتكم الغالية بنا، وهذا ما يحفزنا للاستمرار في التطوير والتحسين.</p>
+            
+            <div class="channel-doc">
+                <img src="https://via.placeholder.com/400x200/27ae60/ffffff?text=روائع البيان" alt="توتيق القناة">
+                <p>قناة روائع البيان - تقديم محتوى مميز وإبداعي</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- الصفحة الثالثة -->
+    <section class="page links-page hidden" id="links">
+        <h1 class="page-title">الروابط التي ستحتاجها</h1>
+        
+        <div class="links-container">
+            <div class="link-card">
+                <i class="fas fa-headphones"></i>
+                <h3>كاب كات</h3>
+                <p>تطبيق احترافي لتسجيل وتعديل الأصوات بجودة عالية</p>
+                <a href="https://drive.google.com/file/d/1Jqncp1jUbJfQN2Dhzy1pGi9GDblrEFxk/view?usp=drivesdk" target="_blank">تحميل</a>
+            </div>
+            
+            <div class="link-card">
+                <i class="fas fa-music"></i>
+                <h3>حزمة الأصوات</h3>
+                <p>مجموعة مميزة من المؤثرات الصوتية والموسيقى الجاهزة للاستخدام</p>
+                <a href="https://drive.google.com/drive/folders/1p8wKqVDRH2Kcj3Chf9utPV1TCMBeioQk" target="_blank">تحميل</a>
+            </div>
+            
+            <div class="link-card">
+                <i class="fab fa-tiktok"></i>
+                <h3>تيك توك</h3>
+                <p>تابعنا على تيك توك لمشاهدة أحدث مقاطعنا القصيرة</p>
+                <a href="https://www.tiktok.com/@mohssin.bm_no1" target="_blank">زيارة القناة</a>
+            </div>
+            
+            <div class="link-card">
+                <i class="fab fa-youtube"></i>
+                <h3>يوتيوب</h3>
+                <p>اشترك في قناتنا على يوتيوب لمشاهدة محتوانا الكامل</p>
+                <a href="https://www.youtube.com/@%D8%B1%D9%88%D8%A7%D8%A6%D8%B9.%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86" target="_blank">زيارة القناة</a>
+            </div>
+        </div>
+        
+        <div class="channel-doc">
+            <img src="https://via.placeholder.com/400x200/27ae60/ffffff?text=روائع البيان" alt="توتيق القناة">
+            <p>قناة روائع البيان - تقديم محتوى مميز وإبداعي</p>
+        </div>
+    </section>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // تفعيل القائمة الجانبية
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        });
+        
+        // حالة الأيقونات
+        let youtubeActive = false;
+        let tiktokActive = false;
+        
+        function toggleIcon(platform) {
+            const icon = document.getElementById(`${platform}Icon`);
+            
+            if (platform === 'youtube') {
+                youtubeActive = !youtubeActive;
+                icon.classList.toggle('active', youtubeActive);
+            } else {
+                tiktokActive = !tiktokActive;
+                icon.classList.toggle('active', tiktokActive);
+            }
+            
+            // الانتقال للصفحة الثانية عند تفعيل كلا الأيقونتين
+            if (youtubeActive && tiktokActive) {
+                setTimeout(() => {
+                    document.getElementById('home').classList.add('hidden');
+                    document.getElementById('documentation').classList.remove('hidden');
+                    
+                    // الانتقال التلقائي للصفحة الثالثة بعد 5 ثواني
+                    setTimeout(() => {
+                        document.getElementById('documentation').classList.add('hidden');
+                        document.getElementById('links').classList.remove('hidden');
+                    }, 5000);
+                }, 1000);
+            }
+        }
+        
+        // تهيئة تأثير الجسيمات
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#27ae60" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#27ae60", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
